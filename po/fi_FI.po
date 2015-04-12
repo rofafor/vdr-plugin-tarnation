@@ -1,0 +1,20 @@
+# VDR plugin language source file.
+# Copyright (C) 2015 Rolf Ahrenberg
+# This file is distributed under the same license as the tarnation package.
+# Rolf Ahrenberg, 2015
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: vdr-tarnation 0.0.1\n"
+"Report-Msgid-Bugs-To: <see README>\n"
+"POT-Creation-Date: 2015-04-12 04:12+0300\n"
+"PO-Revision-Date: 2015-04-12 04:12+0300\n"
+"Last-Translator: Rolf Ahrenberg\n"
+"Language-Team: Finnish <vdr@linuxtv.org>\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Kids say the tarndest things"
+msgstr "Tervaleijonan reviiri"
