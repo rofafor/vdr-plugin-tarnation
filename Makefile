@@ -62,14 +62,15 @@ all: $(SOFILE) i18n
 ### Implicit rules:
 
 %.o: %.c
-	$(CXX) $(CXXFLAGS) -c $(DEFINES) $(INCLUDES) -o $@ $<
+	@echo CC $@
+	$(Q)$(CXX) $(CXXFLAGS) -c $(DEFINES) $(INCLUDES) -o $@ $<
 
 ### Dependencies:
 
 MAKEDEP = $(CXX) -MM -MG
 DEPFILE = .dependencies
 $(DEPFILE): Makefile
-	@$(MAKEDEP) $(CXXFLAGS) $(DEFINES) $(INCLUDES) $(OBJS:%.o=%.c) > $@
+	$(Q)$(MAKEDEP) $(CXXFLAGS) $(DEFINES) $(INCLUDES) $(OBJS:%.o=%.c) > $@
 
 -include $(DEPFILE)
 
@@ -82,17 +83,21 @@ I18Nmsgs  = $(addprefix $(DESTDIR)$(LOCDIR)/, $(addsuffix /LC_MESSAGES/vdr-$(PLU
 I18Npot   = $(PODIR)/$(PLUGIN).pot
 
 %.mo: %.po
-	msgfmt -c -o $@ $<
+	@echo MO $@
+	$(Q)msgfmt -c -o $@ $<
 
 $(I18Npot): $(wildcard *.c)
-	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --package-name=vdr-$(PLUGIN) --package-version=$(VERSION) --msgid-bugs-address='<see README>' -o $@ `ls $^`
+	@echo GT $@
+	$(Q)xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --package-name=vdr-$(PLUGIN) --package-version=$(VERSION) --msgid-bugs-address='<see README>' -o $@ `ls $^`
 
 %.po: $(I18Npot)
-	msgmerge -U --no-wrap --no-location --backup=none -q -N $@ $<
+	@echo PO $@
+	$(Q)msgmerge -U --no-wrap --no-location --backup=none -q -N $@ $<
 	@touch $@
 
 $(I18Nmsgs): $(DESTDIR)$(LOCDIR)/%/LC_MESSAGES/vdr-$(PLUGIN).mo: $(PODIR)/%.mo
-	install -D -m644 $< $@
+	@echo IN $@
+	$(Q)install -D -m644 $< $@
 
 .PHONY: i18n
 i18n: $(I18Nmo) $(I18Npot)
@@ -102,10 +107,12 @@ install-i18n: $(I18Nmsgs)
 ### Targets:
 
 $(SOFILE): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -shared $(OBJS) -o $@
+	@echo LD $@
+	$(Q)$(CXX) $(CXXFLAGS) $(LDFLAGS) -shared $(OBJS) -o $@
 
 install-lib: $(SOFILE)
-	install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(APIVERSION)
+	@echo IN $(DESTDIR)$(LIBDIR)/$^.$(APIVERSION)
+	$(Q)install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(APIVERSION)
 
 install: install-lib install-i18n
 
